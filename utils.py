@@ -1,4 +1,4 @@
-from nodes import Parameter
+from nodes import Parameter, BinaryOp
 
 
 def identity(x):
@@ -17,3 +17,10 @@ def with_parameter(object_data: dict):
     mapped_parameter = Parameter(**parameter)
 
     return {**object_data, "name": mapped_parameter}
+
+
+def with_binary_operation(object_data: dict):
+    op = object_data["op"]
+    mapped_op = BinaryOp(op)
+
+    return {**object_data, "op": mapped_op}
