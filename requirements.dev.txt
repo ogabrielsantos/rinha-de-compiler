@@ -1,0 +1,2 @@
+pytest==7.4.2
+precisely==0.1.9
