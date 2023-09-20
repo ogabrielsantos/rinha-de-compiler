@@ -243,7 +243,15 @@ class Print:
         self.value = value
 
     def execute(self, **kwargs):
-        print(self.value.execute(**kwargs))
+        result = self.value.execute(**kwargs)
+
+        if isinstance(self.value, Function):
+            print("<#closure>")
+        else:
+            print(result)
+
+        return result
+
 
 
 class File:
