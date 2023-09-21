@@ -47,7 +47,9 @@ class Function:
             total_arguments = len(args)
 
             if total_arguments != total_parameters:
-                raise Exception(f"Expected {total_parameters} arguments, got {total_arguments}")
+                raise Exception(
+                    f"Expected {total_parameters} arguments, got {total_arguments}"
+                )
 
             global_namespace = function_kwargs.get("namespace", {})
             function_namespace = dict(zip(parameters, args))
@@ -70,7 +72,9 @@ class Call:
         self.arguments = arguments
 
     def execute(self, **kwargs):
-        arguments = list(map(lambda argument: argument.execute(**kwargs), self.arguments))
+        arguments = list(
+            map(lambda argument: argument.execute(**kwargs), self.arguments)
+        )
 
         return self.callee.execute(**kwargs)(*arguments, **kwargs)
 
@@ -85,7 +89,9 @@ class Let:
     def __init__(self, name: Parameter, value: "Term", **kwargs):
         self.name = name
         self.value = value
-        self.next: "Term" = kwargs["next"]  # to avoid shadowing the built-in `next` function
+        self.next: "Term" = kwargs[
+            "next"
+        ]  # to avoid shadowing the built-in `next` function
 
     def execute(self, **kwargs):
         global_namespace = kwargs.get("namespace", {})
@@ -253,7 +259,6 @@ class Print:
         return result
 
 
-
 class File:
     name: str = "File"
     expression: "Term"
@@ -266,7 +271,21 @@ class File:
         return self.expression.execute()
 
 
-Term = Var | Function | Call | Let | Str | Int | Bool | If | Binary | Tuple | First | Second | Print
+Term = (
+    Var
+    | Function
+    | Call
+    | Let
+    | Str
+    | Int
+    | Bool
+    | If
+    | Binary
+    | Tuple
+    | First
+    | Second
+    | Print
+)
 
 
 SUPPORTED_BINARY_OPERATIONS = {

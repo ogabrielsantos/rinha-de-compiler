@@ -1,14 +1,17 @@
-from precisely import assert_that, is_instance, equal_to
 import pytest
+from precisely import assert_that, equal_to, is_instance
 
 from nodes import Str
 
 
 class TestStr:
-    @pytest.mark.parametrize("value, expected_value", [
-        [1,  "1"],
-        ["foo", "foo"],
-    ])
+    @pytest.mark.parametrize(
+        "value, expected_value",
+        [
+            [1, "1"],
+            ["foo", "foo"],
+        ],
+    )
     def test_should_return_value_as_int(self, value: int | str, expected_value):
         result = Str(value).execute()
 

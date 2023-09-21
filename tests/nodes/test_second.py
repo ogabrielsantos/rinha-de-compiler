@@ -1,6 +1,6 @@
 import pytest
 
-from nodes import Second, Tuple, Int, Var
+from nodes import Int, Second, Tuple, Var
 
 
 class TestSecond:
@@ -16,9 +16,7 @@ class TestSecond:
 
     def test_should_raise_exception_when_is_not_a_tuple(self):
         with pytest.raises(RuntimeError):
-            Second(
-                Int(10)
-            ).execute()
+            Second(Int(10)).execute()
 
     def test_should_keep_namespace_values(self):
         result = Second(

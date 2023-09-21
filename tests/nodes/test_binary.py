@@ -1,6 +1,6 @@
 import pytest
 
-from nodes import Binary, BinaryOp, Int, Str, Bool
+from nodes import Binary, BinaryOp, Bool, Int, Str
 
 
 class TestBinary:
@@ -45,9 +45,11 @@ class TestBinary:
             [BinaryOp.Or, Bool(True), Bool(False), True],
             [BinaryOp.Or, Bool(False), Bool(True), True],
             [BinaryOp.Or, Bool(False), Bool(False), False],
-        ]
+        ],
     )
-    def test_should_return_operator_result(self, operation: BinaryOp, left, right, expected_result):
+    def test_should_return_operator_result(
+        self, operation: BinaryOp, left, right, expected_result
+    ):
         result = Binary(left, operation, right).execute()
 
         assert result == expected_result

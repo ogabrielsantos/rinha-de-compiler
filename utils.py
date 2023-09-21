@@ -1,4 +1,5 @@
-from nodes import Parameter, BinaryOp, Var, Function, Call, Let, Str, Int, Bool, If, Binary, Tuple, First, Second, Print
+from nodes import (Binary, BinaryOp, Bool, Call, First, Function, If, Int, Let,
+                   Parameter, Print, Second, Str, Tuple, Var)
 
 
 def identity(x):

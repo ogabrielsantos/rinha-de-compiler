@@ -18,6 +18,4 @@ class TestWithBinaryOperation:
 
         result = with_binary_operation(data)
 
-        assert_that(result, mapping_includes({
-            "value": "value"
-        }))
+        assert_that(result, mapping_includes({"value": "value"}))

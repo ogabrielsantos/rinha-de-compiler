@@ -1,4 +1,5 @@
-from precisely import assert_that, all_elements, is_instance, has_attrs, is_sequence, mapping_includes
+from precisely import (all_elements, assert_that, has_attrs, is_instance,
+                       is_sequence, mapping_includes)
 
 from nodes import Parameter
 from utils import with_parameters
@@ -19,16 +20,17 @@ class TestWithParameters:
         result_parameters = result.get("parameters", {})
 
         assert_that(result_parameters, all_elements(is_instance(Parameter)))
-        assert_that(result_parameters, is_sequence(
-            has_attrs(text="a"),
-            has_attrs(text="b"),
-        ))
+        assert_that(
+            result_parameters,
+            is_sequence(
+                has_attrs(text="a"),
+                has_attrs(text="b"),
+            ),
+        )
 
     def test_should_keep_other_fields(self):
         data = {"parameters": [{"text": "a"}, {"text": "b"}], "value": "value"}
 
         result = with_parameters(data)
 
-        assert_that(result, mapping_includes({
-            "value": "value"
-        }))
+        assert_that(result, mapping_includes({"value": "value"}))

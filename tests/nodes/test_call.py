@@ -1,4 +1,4 @@
-from nodes import Call, Function, Parameter, Binary, BinaryOp, Var, Int
+from nodes import Binary, BinaryOp, Call, Function, Int, Parameter, Var
 
 
 class TestCall:

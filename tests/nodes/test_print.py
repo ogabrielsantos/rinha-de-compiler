@@ -1,9 +1,10 @@
 from types import FunctionType
-from unittest.mock import patch, call
+from unittest.mock import call, patch
 
 import pytest
 
-from nodes import Print, Str, Var, Int, Bool, Tuple, Function, Let, Parameter, Call, Binary, BinaryOp, File
+from nodes import (Binary, BinaryOp, Bool, Call, File, Function, Int, Let,
+                   Parameter, Print, Str, Tuple, Var)
 
 
 class TestPrint:
@@ -18,7 +19,7 @@ class TestPrint:
             [Function(parameters=[], value=Int(10)), "<#closure>"],
             [Tuple(Int(10), Int(20)), (10, 20)],
             [Tuple(Str("foo"), Str("bar")), ("foo", "bar")],
-        ]
+        ],
     )
     def test_should_print_sent_value(self, mock_print, value, expected_message):
         Print(value).execute(namespace={"foo": "foo value"})
@@ -30,30 +31,18 @@ class TestPrint:
         "value, expected_messages",
         [
             [
-                Let(
-                    name=Parameter("_"),
-                    value=Print(Int(1)),
-                    next=Print(Int(2))
-                ),
-                [call(1), call(2)]
+                Let(name=Parameter("_"), value=Print(Int(1)), next=Print(Int(2))),
+                [call(1), call(2)],
             ],
             [
                 Call(
                     callee=Function(
-                        parameters=[
-                            Parameter("a"),
-                            Parameter("b"),
-                            Parameter("c")
-                        ],
-                        value=Str("foo")
+                        parameters=[Parameter("a"), Parameter("b"), Parameter("c")],
+                        value=Str("foo"),
                     ),
-                    arguments=[
-                        Print(Int(1)),
-                        Print(Int(2)),
-                        Print(Int(3))
-                    ]
+                    arguments=[Print(Int(1)), Print(Int(2)), Print(Int(3))],
                 ),
-                [call(1), call(2), call(3)]
+                [call(1), call(2), call(3)],
             ],
             [
                 Let(
@@ -62,9 +51,9 @@ class TestPrint:
                         Print(Int(1)),
                         Print(Int(2)),
                     ),
-                    next=Print(Var("tuple"))
+                    next=Print(Var("tuple")),
                 ),
-                [call(1), call(2), call((1, 2))]
+                [call(1), call(2), call((1, 2))],
             ],
             [
                 Print(
@@ -74,9 +63,9 @@ class TestPrint:
                         rhs=Print(Int(2)),
                     )
                 ),
-                [call(1), call(2), call(3)]
-            ]
-        ]
+                [call(1), call(2), call(3)],
+            ],
+        ],
     )
     def test_should_print_complex_values(self, mock_print, value, expected_messages):
         File(expression=value).execute()
@@ -93,7 +82,7 @@ class TestPrint:
             [Bool(True), True],
             [Tuple(Int(10), Int(20)), (10, 20)],
             [Tuple(Str("foo"), Str("bar")), ("foo", "bar")],
-        ]
+        ],
     )
     def test_should_return_value(self, mock_print, value, expected_value):
         result = Print(value).execute(namespace={"foo": "foo value"})

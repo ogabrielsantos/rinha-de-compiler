@@ -2,7 +2,7 @@ from types import FunctionType
 
 import pytest
 
-from nodes import Function, Parameter, Var, Binary, BinaryOp
+from nodes import Binary, BinaryOp, Function, Parameter, Var
 
 
 class TestFunction:
@@ -36,7 +36,9 @@ class TestFunction:
 
         assert result(100, 200) == 300
 
-    def test_should_raise_an_exception_if_function_is_called_with_wrong_number_of_parameters(self):
+    def test_should_raise_an_exception_if_function_is_called_with_wrong_number_of_parameters(
+        self,
+    ):
         result = Function(
             parameters=[
                 Parameter(text="foo"),
