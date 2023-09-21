@@ -1,4 +1,4 @@
-from nodes import Tuple, Str, Var
+from nodes import Str, Tuple, Var
 
 
 class TestTuple:

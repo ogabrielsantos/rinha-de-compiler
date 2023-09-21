@@ -45,7 +45,9 @@ class TestBinaryOperations:
             [binary_operations.or_, True, False, True],
             [binary_operations.or_, False, True, True],
             [binary_operations.or_, False, False, False],
-        ]
+        ],
     )
-    def test_should_return_correct_result(self, operation: callable, left, right, expected):
+    def test_should_return_correct_result(
+        self, operation: callable, left, right, expected
+    ):
         assert operation(left, right) == expected
