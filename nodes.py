@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import cache, wraps
 
 import binary_operations
 
@@ -29,6 +30,11 @@ class Parameter:
         self.text = text
 
 
+class HashableDict(dict):
+    def __hash__(self):
+        return hash(frozenset(self))
+
+
 class Function:
     kind: str = "Function"
     parameters: list[Parameter]
@@ -43,7 +49,18 @@ class Function:
         parameters = list(map(lambda parameter: parameter.text, self.parameters))
         total_parameters = len(parameters)
 
-        def function(*args, **function_kwargs):
+        def with_hashable_kwargs(fn):
+            @wraps(fn)
+            def wrapper(*wrapper_args, **wrapper_kwargs):
+                global_namespace = wrapper_kwargs.get("namespace", {})
+
+                return fn(*wrapper_args, namespace=HashableDict(global_namespace))
+
+            return wrapper
+
+        @with_hashable_kwargs
+        @cache  # @todo yep, it's a dumb and risky optimization
+        def function(*args, namespace: dict | None = None):
             total_arguments = len(args)
 
             if total_arguments != total_parameters:
@@ -51,7 +68,7 @@ class Function:
                     f"Expected {total_parameters} arguments, got {total_arguments}"
                 )
 
-            global_namespace = function_kwargs.get("namespace", {})
+            global_namespace = namespace or {}
             function_namespace = dict(zip(parameters, args))
 
             namespace = {**global_namespace, **function_namespace}
