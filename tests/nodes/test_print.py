@@ -3,8 +3,21 @@ from unittest.mock import call, patch
 
 import pytest
 
-from nodes import (Binary, BinaryOp, Bool, Call, File, Function, Int, Let,
-                   Parameter, Print, Str, Tuple, Var)
+from nodes import (
+    Binary,
+    BinaryOp,
+    Bool,
+    Call,
+    File,
+    Function,
+    Int,
+    Let,
+    Parameter,
+    Print,
+    Str,
+    Tuple,
+    Var,
+)
 
 
 class TestPrint:
