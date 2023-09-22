@@ -2,7 +2,7 @@ from types import FunctionType
 
 import pytest
 
-from nodes import Binary, BinaryOp, Function, Parameter, Var
+from nodes import Binary, BinaryOp, Function, Parameter, Var, Let, Int, Print, Call
 
 
 class TestFunction:
@@ -82,3 +82,48 @@ class TestFunction:
         ).execute()
 
         assert result(100, 500, namespace={"bar": 200}) == 600
+
+    def test_should_allow_usage_of_variables_from_local_namespace(self):
+        result = Let(
+            name=Parameter(text="a"),
+            value=Int(9),
+            next=Let(
+                name=Parameter(text="test"),
+                value=Function(
+                    parameters=[],
+                    value=Let(
+                        name=Parameter(text="d"),
+                        value=Int(10),
+                        next=Let(
+                            name=Parameter(text="closure"),
+                            value=Function(
+                                parameters=[Parameter(text="n")],
+                                value=Binary(
+                                    Binary(
+                                        Var("n"),
+                                        BinaryOp.Mul,
+                                        Var("d"),
+                                    ),
+                                    BinaryOp.Add,
+                                    Var("a"),
+                                ),
+                            ),
+                            next=Var("closure"),
+                        ),
+                    ),
+                ),
+                next=Print(
+                    Call(
+                        callee=Call(
+                            callee=Var("test"),
+                            arguments=[],
+                        ),
+                        arguments=[
+                            Int(5),
+                        ],
+                    )
+                ),
+            ),
+        ).execute()
+
+        assert result == 59

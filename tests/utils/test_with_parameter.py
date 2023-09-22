@@ -1,5 +1,11 @@
-from precisely import (all_elements, assert_that, has_attrs, is_instance,
-                       is_sequence, mapping_includes)
+from precisely import (
+    all_elements,
+    assert_that,
+    has_attrs,
+    is_instance,
+    is_sequence,
+    mapping_includes,
+)
 
 from nodes import Parameter
 from utils import with_parameter

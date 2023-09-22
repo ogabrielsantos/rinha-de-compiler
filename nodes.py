@@ -46,32 +46,34 @@ class Function:
         self.value = value
 
     def execute(self, **kwargs):
+        global_namespace = kwargs.get("namespace", {})
         parameters = list(map(lambda parameter: parameter.text, self.parameters))
         total_parameters = len(parameters)
 
         def with_hashable_kwargs(fn):
             @wraps(fn)
             def wrapper(*wrapper_args, **wrapper_kwargs):
-                global_namespace = wrapper_kwargs.get("namespace", {})
+                local_namespace = wrapper_kwargs.get("namespace", {})
 
-                return fn(*wrapper_args, namespace=HashableDict(global_namespace))
+                namespace = {**global_namespace, **local_namespace}
+
+                return fn(*wrapper_args, namespace=HashableDict(namespace))
 
             return wrapper
 
         @with_hashable_kwargs
         @cache  # @todo yep, it's a dumb and risky optimization
-        def function(*args, namespace: dict | None = None):
-            total_arguments = len(args)
+        def function(*function_args, **function_kwargs):
+            total_arguments = len(function_args)
 
             if total_arguments != total_parameters:
                 raise Exception(
                     f"Expected {total_parameters} arguments, got {total_arguments}"
                 )
 
-            global_namespace = namespace or {}
-            function_namespace = dict(zip(parameters, args))
-
-            namespace = {**global_namespace, **function_namespace}
+            local_namespace = function_kwargs.get("namespace", {})
+            function_namespace = dict(zip(parameters, function_args))
+            namespace = {**local_namespace, **function_namespace}
 
             return self.value.execute(namespace=namespace)
 

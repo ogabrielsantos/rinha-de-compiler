@@ -1,8 +1,23 @@
 import pytest
 from precisely import all_elements, assert_that, is_instance
 
-from nodes import (Binary, BinaryOp, Bool, Call, First, Function, If, Int, Let,
-                   Parameter, Print, Second, Str, Tuple, Var)
+from nodes import (
+    Binary,
+    BinaryOp,
+    Bool,
+    Call,
+    First,
+    Function,
+    If,
+    Int,
+    Let,
+    Parameter,
+    Print,
+    Second,
+    Str,
+    Tuple,
+    Var,
+)
 from utils import to_ast_node
 
 
