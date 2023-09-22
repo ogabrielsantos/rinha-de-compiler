@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from nodes import Let, Parameter, Print, Str, Var
+from nodes import Let, Parameter, Print, Str, Var, HashableDict
 
 
 class TestLet:
@@ -18,7 +18,7 @@ class TestLet:
             name=Parameter("value"),
             value=Str("foo"),
             next=Print(Var("bar")),
-        ).execute(namespace={"bar": "global value"})
+        ).execute(namespace=HashableDict({"bar": "global value"}))
 
         mock_print.assert_called_with("global value")
 
@@ -28,6 +28,6 @@ class TestLet:
             name=Parameter("value"),
             value=Str("local value"),
             next=Print(Var("value")),
-        ).execute(namespace={"value": "global value"})
+        ).execute(namespace=HashableDict({"value": "global value"}))
 
         mock_print.assert_called_with("local value")

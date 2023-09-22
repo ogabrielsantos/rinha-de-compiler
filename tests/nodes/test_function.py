@@ -2,7 +2,18 @@ from types import FunctionType
 
 import pytest
 
-from nodes import Binary, BinaryOp, Function, Parameter, Var, Let, Int, Print, Call
+from nodes import (
+    Binary,
+    BinaryOp,
+    Function,
+    Parameter,
+    Var,
+    Let,
+    Int,
+    Print,
+    Call,
+    HashableDict,
+)
 
 
 class TestFunction:
@@ -19,7 +30,7 @@ class TestFunction:
             ),
         ).execute()
 
-        assert isinstance(result, FunctionType)
+        assert isinstance(result.__wrapped__, FunctionType)
 
     def test_should_return_a_function_that_executes_expected_term(self):
         result = Function(
@@ -66,7 +77,7 @@ class TestFunction:
             ),
         ).execute()
 
-        assert result(100, namespace={"bar": 200}) == 300
+        assert result(100, namespace=HashableDict({"bar": 200})) == 300
 
     def test_should_overwrite_variables_from_namespace(self):
         result = Function(
@@ -81,7 +92,7 @@ class TestFunction:
             ),
         ).execute()
 
-        assert result(100, 500, namespace={"bar": 200}) == 600
+        assert result(100, 500, namespace=HashableDict({"bar": 200})) == 600
 
     def test_should_allow_usage_of_variables_from_local_namespace(self):
         result = Let(
