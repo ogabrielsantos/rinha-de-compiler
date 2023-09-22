@@ -1,4 +1,4 @@
-from nodes import Str, Tuple, Var
+from nodes import Str, Tuple, Var, HashableDict
 
 
 class TestTuple:
@@ -14,6 +14,6 @@ class TestTuple:
         result = Tuple(
             first=Var("foo"),
             second=Var("bar"),
-        ).execute(namespace={"foo": "Hello", "bar": "World"})
+        ).execute(namespace=HashableDict({"foo": "Hello", "bar": "World"}))
 
         assert result == ("Hello", "World")

@@ -1,4 +1,4 @@
-from nodes import Binary, BinaryOp, Bool, If, Int, Str, Var
+from nodes import Binary, BinaryOp, Bool, If, Int, Var, HashableDict
 
 
 class TestIf:
@@ -25,6 +25,6 @@ class TestIf:
             condition=Binary(Int(10), BinaryOp.Eq, Int(10)),
             then=Var("foo"),
             otherwise=Var("bar"),
-        ).execute(namespace={"foo": "foo value", "bar": "bar value"})
+        ).execute(namespace=HashableDict({"foo": "foo value", "bar": "bar value"}))
 
         assert result == "foo value"

@@ -1,6 +1,6 @@
 import pytest
 
-from nodes import First, Int, Tuple, Var
+from nodes import First, Int, Tuple, Var, HashableDict
 
 
 class TestFirst:
@@ -24,6 +24,6 @@ class TestFirst:
                 Var("foo"),
                 Var("bar"),
             )
-        ).execute(namespace={"foo": "foo value", "bar": "bar value"})
+        ).execute(namespace=HashableDict({"foo": "foo value", "bar": "bar value"}))
 
         assert result == "foo value"

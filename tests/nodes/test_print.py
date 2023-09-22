@@ -17,6 +17,7 @@ from nodes import (
     Str,
     Tuple,
     Var,
+    HashableDict,
 )
 
 
@@ -35,7 +36,7 @@ class TestPrint:
         ],
     )
     def test_should_print_sent_value(self, mock_print, value, expected_message):
-        Print(value).execute(namespace={"foo": "foo value"})
+        Print(value).execute(namespace=HashableDict({"foo": "foo value"}))
 
         mock_print.assert_called_with(expected_message)
 
@@ -98,7 +99,7 @@ class TestPrint:
         ],
     )
     def test_should_return_value(self, mock_print, value, expected_value):
-        result = Print(value).execute(namespace={"foo": "foo value"})
+        result = Print(value).execute(namespace=HashableDict({"foo": "foo value"}))
 
         assert result == expected_value
 
@@ -107,4 +108,4 @@ class TestPrint:
         function = Function(parameters=[], value=Int(10))
         result = Print(function).execute()
 
-        assert isinstance(result, FunctionType)
+        assert isinstance(result.__wrapped__, FunctionType)

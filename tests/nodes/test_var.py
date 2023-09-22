@@ -1,14 +1,14 @@
-from nodes import Var
+from nodes import Var, HashableDict
 
 
 class TestVar:
     def test_should_return_value_from_namespace(self):
-        result = Var("foo").execute(namespace={"foo": "bar"})
+        result = Var("foo").execute(namespace=HashableDict({"foo": "bar"}))
 
         assert result == "bar"
 
     def test_should_return_nothing_when_variable_doesnt_exist(self):
-        result = Var("foo").execute(namespace={})
+        result = Var("foo").execute(namespace=HashableDict({}))
 
         assert result is None
 
