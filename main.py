@@ -7,6 +7,8 @@ from utils import to_ast_node
 
 DEFAULT_INPUT_FILE = "/var/rinha/source.rinha.json"
 
+sys.setrecursionlimit(100000)
+
 
 if __name__ == "__main__":
     input_file = (
@@ -16,7 +18,5 @@ if __name__ == "__main__":
     with open(input_file) as file:
         data = json.load(file, object_hook=to_ast_node)
 
-        sys.setrecursionlimit(100000)
-
         file = File(**data)
-        file.expression.execute()
+        file.execute()
