@@ -222,10 +222,12 @@ class First:
         self.value = value
 
     def execute(self, **kwargs):
-        if not isinstance(self.value, Tuple):
-            raise RuntimeError(f"Expected a tuple, given {type(self.value)}")
+        result = self.value.execute(**kwargs)
 
-        first, _ = self.value.execute(**kwargs)
+        if not isinstance(result, tuple):
+            raise RuntimeError(f"Expected a tuple, given {type(result)}")
+
+        first, _ = result
 
         return first
 
@@ -239,10 +241,12 @@ class Second:
         self.value = value
 
     def execute(self, **kwargs):
-        if not isinstance(self.value, Tuple):
-            raise RuntimeError(f"Expected a tuple, given {type(self.value)}")
+        result = self.value.execute(**kwargs)
 
-        _, second = self.value.execute(**kwargs)
+        if not isinstance(result, tuple):
+            raise RuntimeError(f"Expected a tuple, given {type(result)}")
+
+        _, second = result
 
         return second
 
