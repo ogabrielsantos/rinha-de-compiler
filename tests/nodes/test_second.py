@@ -27,3 +27,18 @@ class TestSecond:
         ).execute(namespace=HashableDict({"foo": "foo value", "bar": "bar value"}))
 
         assert result == "bar value"
+
+    def test_should_allow_nested_calls(self):
+        result = Second(
+            Second(
+                Tuple(
+                    Int(10),
+                    Tuple(
+                        Int(20),
+                        Int(30),
+                    ),
+                )
+            ),
+        ).execute()
+
+        assert result == 30
