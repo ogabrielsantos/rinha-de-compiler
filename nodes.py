@@ -61,7 +61,7 @@ class Function:
 
             local_namespace = function_kwargs.get("namespace", {})
             function_namespace = dict(zip(parameters, function_args))
-            namespace = {**global_namespace, **local_namespace, **function_namespace}
+            namespace = {**local_namespace, **global_namespace, **function_namespace}
 
             return self.value.execute(namespace=HashableDict(namespace))
 
