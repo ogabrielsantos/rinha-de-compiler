@@ -13,6 +13,7 @@ from nodes import (
     Print,
     Call,
     HashableDict,
+    If,
 )
 
 
@@ -138,3 +139,81 @@ class TestFunction:
         ).execute()
 
         assert result == 59
+
+    def test_should_not_overwrite_scoped_variables(self):
+        """
+        let foo = (n1Fn, n2Fn) => {
+            let n1 = n1Fn();
+            let k2 = n2Fn();
+
+            if (n1 == 5) {
+                return n1
+            } else {
+                return foo(() => n2, () => n1 + n2)
+            }
+        };
+        foo(() => 0, () => 1)
+        """
+        result = Let(
+            name=Parameter(text="foo"),
+            value=Function(
+                parameters=[
+                    Parameter(text="n1Fn"),
+                    Parameter(text="n2Fn"),
+                ],
+                value=Let(
+                    name=Parameter(text="n1"),
+                    value=Call(
+                        callee=Var("n1Fn"),
+                        arguments=[],
+                    ),
+                    next=Let(
+                        name=Parameter(text="n2"),
+                        value=Call(
+                            callee=Var("n2Fn"),
+                            arguments=[],
+                        ),
+                        next=If(
+                            condition=Binary(
+                                Var("n1"),
+                                BinaryOp.Eq,
+                                Int(5),
+                            ),
+                            then=Var("n1"),
+                            otherwise=Call(
+                                callee=Var("foo"),
+                                arguments=[
+                                    Function(
+                                        parameters=[],
+                                        value=Var("n2"),
+                                    ),
+                                    Function(
+                                        parameters=[],
+                                        value=Binary(
+                                            Var("n1"),
+                                            BinaryOp.Add,
+                                            Var("n2"),
+                                        ),
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            next=Call(
+                callee=Var("foo"),
+                arguments=[
+                    Function(
+                        parameters=[],
+                        value=Int(0),
+                    ),
+                    Function(
+                        parameters=[],
+                        value=Int(1),
+                    ),
+                ],
+            ),
+        ).execute()
+
+        assert result == 5
